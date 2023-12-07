@@ -1,0 +1,144 @@
+********************* MPI CLUSTER ************************
+master part
+
+sudo apt-get install openmpi bin
+
+sudo nano /etc/hosts
+
+//add master and client ip address
+179.16.51.49       master
+179.16.51.39       client1
+179.16.51.39       client2
+
+sudo adduser cam5
+
+sudo usermod -aG sudo cam5
+sudo apt get install openssh server
+su - cam5
+ssh-keygen t rsa
+cd .ssh/
+ls
+
+cat id_rsa.pub >> authorized_keys
+ssh-copy id client1
+ssh client1
+exit
+
+//for client2
+cd ..
+ssh-copy id client2
+ssh client2
+exit
+
+sudo apt-get install nfs kernel server
+mkdir cloud
+sudo nano /etc/exports
+//add the following command
+/home/cam5/cloud *(rw,sync,no_root_squash,no_subtree_check)
+
+exportfs -a
+sudo service nfs-kernel-server restart
+
+***********client part
+
+sudo apt-get install openmpi-bin
+
+sudo nano /etc/hosts
+
+//add master and client ip address
+179.16.51.49       master
+179.16.51.39       client1
+
+sudo usermod -aG sudo labtest
+
+sudo apt install openssh-server
+
+su – cam5
+
+ssh-keygen -t rsa (optional)  
+
+cd .ssh/
+
+cat id_rsa.pub >> authorized_keys
+
+ssh-copy-id master
+
+ssh master
+
+sudo apt-get install nfs-common
+
+mkdir cloud(check)
+sudo mount -t nfs master:/home/cam5/cloud ~/cloud
+
+ df -h
+
+********************************************************
+ubuntu freeNas
+
+sudo apt-get install nfs-common
+
+sudo mount 172.16.51.128:/mnt/vol/ubuntu
+                        /home/msis/vod
+                        
+********************************************************
+
+start vmware give name , iso image add 4 gb ram 
+
+shutdown 
+
+then add ide 
+
+install
+
+reboot 
+
+get an ip paste it in browser
+
+*********************************************************
+
+SMB
+
+got to volume manager : give name add extra disk 
+
+shell : cd /mnt
+        cd/vol(volume name in volume manager)
+        
+        mkdir apple
+        touch file1.txt
+        cat>>file1.txt
+        
+sharing: Click windows
+				 Click Add windows.
+         check apply default permission
+         check guest access
+         
+services: smb running
+
+Open filemanager->this pc->map network drive
+
+********************************************************
+
+WEBDEV
+
+got to volume manager : give name add extra disk 
+
+shell : cd /mnt
+        cd/vol(volume name in volume manager)
+        
+        mkdir apple
+        touch file1.txt
+        cat>>file1.txt
+        
+sharing: Click webdev
+				 Add webdev share
+         give share name
+         
+services: webdev running
+
+click on webdev add password
+
+give ip/sharename
+
+sign in 
+
+************************************************************
